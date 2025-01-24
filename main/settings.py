@@ -17,10 +17,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'rest_framework',
+    'rest_framework.authtoken',
+    
     'corsheaders',
+    
     'users',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': [
+    #     'rest_framework.pagination.PageNumberPagination',
+    # ],
+    # 'PAGE_SIZE': 3,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,6 +78,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': project_secrets.DB_NAME,
+#         'USER': project_secrets.DB_USER_NAME,
+#         'PASSWORD': project_secrets.DB_PASSWORD,
+#         'HOST': project_secrets.DB_HOST,
+#         'PORT': project_secrets.DB_PORT,
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
