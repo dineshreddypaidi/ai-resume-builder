@@ -1,4 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
 import requests
+import project_secrets
 
 class GithubScraper:
     def __init__(self, github_link):
@@ -6,12 +11,13 @@ class GithubScraper:
             raise ValueError("GitHub link cannot be empty")
         self.github_link = github_link.strip()
         self.username = self.github_link.split('/')[-1]
+        self.headers = {"Authorization": f"token {project_secrets.GITHUB_TOKEN}"}
 
     def fetch_repositories(self):
         """Fetching the repositories of the GitHub user."""
         
         api_url = f"https://api.github.com/users/{self.username}/repos"
-        response = requests.get(api_url)
+        response = requests.get(api_url, headers=self.headers)
 
         if response.status_code == 200:
             return response.json()
@@ -28,7 +34,7 @@ class GithubScraper:
 
             project_info = []
             for repo in repositories:
-                languages_url = requests.get(repo['languages_url'])
+                languages_url = requests.get(repo['languages_url'], headers=self.headers)
                 languages = list(languages_url.json())
                 
                 project_info.append({
